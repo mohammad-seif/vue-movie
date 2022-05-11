@@ -2,18 +2,15 @@
   <input class="search-input" type="text" @change="change">
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  props: {
-
-  },
   data: () => ({
 
   }),
   methods: {
-    change(e) {
+    change(e: any) {
       console.log("sdfghj", e)
     }
   }

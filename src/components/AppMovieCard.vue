@@ -22,14 +22,13 @@ export default defineComponent({
 
 <style scoped>
 .movie-card {
-  width: 33%;
-  height: 195px;
+  height: 175px;
   border-radius: 6px;
   background: #F1F1F1;
   border: solid 1px rgba(196, 196, 196, 1);
   display: flex;
   flex-flow: nowrap row;
-  margin-bottom: 35px;
+  overflow: hidden;
 }
 .movie-card-image {
   flex: .4;

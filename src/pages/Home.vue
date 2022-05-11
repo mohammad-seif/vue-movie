@@ -12,14 +12,20 @@
   </AppHeader>
   <div class="movie-container">
     <AppMovieCard
-      v-for="(card, key) in 5"
+      v-for="(card, key) in 3"
       :key="key"
     />
   </div>
+  <div class="pagination">
+    <RouterLink class="link" to="/">Previous Page</RouterLink>
+    <RouterLink class="link" to="/125">Next Page</RouterLink>
+  </div>
+  <div class="items-conter">Showing 1-20 Result</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
+import { RouterLink } from 'vue-router';
 import Search from "@/components/AppSearch.vue";
 import AppMovieCard from "@/components/AppMovieCard.vue";
 import AppHeader from "@/components/common/AppHeader.vue";
@@ -34,13 +40,11 @@ export default defineComponent({
 <style scoped>
 .movie-container {
   width: 100%;
-  /*height: 100vh;*/
-  display: flex;
-  align-items: start;
-  /*justify-content: space-between;*/
-  flex-flow: wrap row;
-  align-content: space-around;
-  margin-top: 110px;
+  display: grid;
+  column-gap: 67px;
+  row-gap: 35px;
+  margin-top: 30px;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .home-header-container {
@@ -49,5 +53,21 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.pagination {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+.items-conter {
+  text-align: center
+}
+.link {
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
 }
 </style>

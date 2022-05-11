@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <DefaultLayout>
-      <RouterView />
-    </DefaultLayout>
-  </div>
+  <DefaultLayout>
+    <RouterView />
+  </DefaultLayout>
 </template>
 
 <script lang="ts">
-import DefaultLayout from "./layout/default.vue"
+import DefaultLayout from './layout/default.vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { defineComponent } from 'vue'
 
@@ -19,12 +17,12 @@ export default defineComponent({
 </script>
 
 <style>
+@import url('http://fonts.cdnfonts.com/css/roboto');
 .flex {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-@import url('http://fonts.cdnfonts.com/css/roboto');
 html {
   font-family: Roboto, Verdana;
   overflow-x: hidden;
