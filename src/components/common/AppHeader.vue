@@ -17,5 +17,6 @@ export default defineComponent({})
   background: #E2E2E2;
   border-radius: 6px;
   padding: 33px 81px;
+  margin-bottom: 30px;
 }
 </style>

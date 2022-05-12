@@ -43,7 +43,6 @@ export default defineComponent({
   display: grid;
   column-gap: 67px;
   row-gap: 35px;
-  margin-top: 30px;
   grid-template-columns: repeat(3, 1fr);
 }
 

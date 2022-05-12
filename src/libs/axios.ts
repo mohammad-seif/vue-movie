@@ -19,6 +19,7 @@ export default class AxiosApi implements IApi {
   }
 
   setup(baseURL: string, headers: Object) {
+    axios.defaults.baseURL = baseURL;
     this.baseURL = baseURL;
     this.headers = headers;
   }

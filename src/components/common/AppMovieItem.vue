@@ -16,12 +16,6 @@
           {{index + 1}}
         </div>
       </div>
-<!--      <ul>-->
-<!--        <li-->
-<!--          v-for="(item, index) in 10"-->
-<!--          :key="index"-->
-<!--        >{{ index }}</li>-->
-<!--      </ul>-->
     </div>
   </div>
   <div class="movie-item-desc">
@@ -63,7 +57,6 @@ li {
   padding: 18px;
 }
 .movie-item-card {
-  margin-top: 78px;
   width: 100%;
   display: flex;
 }
