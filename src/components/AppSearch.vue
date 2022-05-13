@@ -1,30 +1,24 @@
 <template>
-  <input class="search-input" type="text" @change="change">
+  <Datepicker class="search-input" range v-model="model" format="date" />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
+import Datepicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 
 export default defineComponent({
-  data: () => ({
-
-  }),
-  methods: {
-    change(e: any) {
-      console.log("sdfghj", e)
-    }
+  props: {
+    model: Object as () => Array<string>
+  },
+  components: {
+    Datepicker
   }
-})
+});
 </script>
 
 <style scoped>
 .search-input {
-  width: 221px;
-  height: 31px;
-  border: none;
-  outline: none;
-  background: #FFFFFF;
-  border: 1px solid #CFCFCF;
-  margin: 0 10px;
+  margin-left: 10px;
 }
 </style>
