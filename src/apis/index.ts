@@ -1,57 +1,50 @@
-import type { IApi } from "@/libs/axios";
+import type { AxiosResponse } from "axios";
+import axios from "axios";
+import Response, { RequestMethod } from "../libs/Response";
+import Logger from "../libs/Logger";
 
-export interface IService {
-  baseURL: string;
-  headers: Object;
-  apiExecuter: IApi;
-}
-export default class Service implements IService {
-  baseURL: string = "";
-  headers: Object = {};
-  apiExecuter!: IApi;
-  
-  setBaseUrl(newUrl: string) {
-    this.baseURL = newUrl;
-    return this;
-  }
+const reqMethods = ["request", "delete", "get", "head", "options", "post", "put", "patch"];
 
-  setHeaders(newHeaders: Object) {
-    this.headers = newHeaders;
-    return this;
-  }
 
-  setApiExecuter(newExecuter: IApi) {
-    this.apiExecuter = newExecuter;
-    return this;
-  }
+const appClient: any = axios;
 
-  buildApi() {
-    this.apiExecuter.setup(this.baseURL, this.headers);
-    return this;
-  }
+let apiModule: any = {};
 
-  get(url: string, payload?: any) {
-    this.apiExecuter.get(url, payload);
-  }
-  
-  delete(url: string, payload: any) {
-    this.apiExecuter.delete(url, payload);
-  } 
-  
-  patch(url: string, payload: any) {
-    this.apiExecuter.patch(url, payload);
-  }
+reqMethods.forEach(method => {
+	apiModule[method] = function (...args: any[]) {
+		if (!appClient) {
+			throw new Error("appClient not installed");
+		}
+		return appClient[method].apply(null, args);
+	};
+});
 
-  post(url: string, payload: any) {
-    this.apiExecuter.post(url, payload);
-  }
+export default apiModule;
 
-}
+export const onResponse = (res: AxiosResponse<any>, apiName: string) => {
+	return new Response({
+    success: res.status > 200 && res.status < 300,
+		data: res.data,
+    requestMethod: res.config.method as undefined,
+		message: res.statusText,
+		errorType: res.data.errorType,
+		statusCode: res.status,
+		apiName,
+	});
+};
 
-// const service = new Service();
-
-// const api = service
-//   .setBaseUrl("/v1")
-//   .setHeaders({"Content-type": "application/json"})
-//   .setApiExecuter(new FetchApi())
-//   .buildApi();
+export const onError = (err: any, apiName: string) => {
+	const response = err?.response?.data;
+	Logger.log({
+		fileName: "Test",
+		type: "ERROR",
+		log: err?.response?.data?.errorType || err,
+	});
+	return new Response({
+		success: false,
+		message: response?.message,
+		errorType: response?.errorType,
+		statusCode: response?.statusCode,
+		apiName,
+	});
+};
