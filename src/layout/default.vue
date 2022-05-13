@@ -20,6 +20,7 @@ export default defineComponent({
   inset: 0 0;
   width: 100vw;
   height: 48px;
+  z-index: 999;
   background: rgba(17, 185, 128, 1);
 }
 .content {

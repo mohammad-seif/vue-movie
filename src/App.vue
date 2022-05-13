@@ -6,12 +6,11 @@
 
 <script lang="ts">
 import DefaultLayout from './layout/default.vue';
-import { RouterLink, RouterView } from 'vue-router';
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   components: {
-    DefaultLayout
+    DefaultLayout,
   }
 })
 </script>

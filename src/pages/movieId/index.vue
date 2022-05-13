@@ -1,26 +1,43 @@
 <template>
   <AppHeader>
     <div class="header-container">
-      <AppButton>
+      <AppButton @click="$router.push('/')">
         <template #label>Back</template>
-        <template #prepend-icon>&lt;-</template>
       </AppButton>
       <div class="movie-info">
-        <h1 class="title">Salam</h1>
-        <h3 class="sub-title">Mamad</h3>
+        <h1 class="title">{{ movie.title }}</h1>
+        <h3 class="sub-title">{{ movie.tagline }}</h3>
       </div>
     </div>
   </AppHeader>
-  <AppMovieItem />
+  <AppMovieItem v-if="movie.id" :movie="movie"/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppHeader from "@/components/common/AppHeader.vue"
 import AppButton from "@/components/common/AppButton.vue";
-import AppMovieItem from "@/components/common/AppMovieItem.vue";
+import { fetchMovieById } from "@/apis/movie";
+import AppMovieItem from "@/components/AppMovieItem.vue";
+import type IMovie from "@/model/movie";
+
+type Data = {
+  movie: IMovie
+}
+
 export default defineComponent({
-  components: {AppMovieItem, AppButton, AppHeader}
+  components: {
+    AppMovieItem,
+    AppButton,
+    AppHeader
+  },
+  data: () => <Data>({
+    movie: {}
+  }),
+  async created() {
+    const { data } = await fetchMovieById(+this.$route.params.movieId);
+    this.movie = data;
+  }
 })
 </script>
 
@@ -40,8 +57,7 @@ export default defineComponent({
   align-items: center;
 }
 .title {
-  font-style: normal;
-  font-weight: 700;
+  font-weight: bolder;
   font-size: 18px;
 }
 .sub-title {
