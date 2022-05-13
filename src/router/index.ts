@@ -6,12 +6,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Home',
+      name: 'HomePage',
       component: Home
     },
     {
       path: '/:movieId',
       name: 'Movie',
+      props: (route) => ({ id: route.params.movieId }),
       component: import("../pages/movieId/index.vue")
     }
   ]
