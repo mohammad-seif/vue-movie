@@ -2,8 +2,12 @@ import type { AxiosResponse } from "axios";
 import axios from "axios";
 import Response, { RequestMethod } from "../libs/Response";
 import Logger from "../libs/Logger";
+import { apiKey } from "../config/axios"
 
 const reqMethods = ["request", "delete", "get", "head", "options", "post", "put", "patch"];
+
+axios.defaults.params = {};
+axios.defaults.params["api_key"] = apiKey;
 
 
 const appClient: any = axios;

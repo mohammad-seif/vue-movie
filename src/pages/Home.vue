@@ -59,8 +59,8 @@ export default defineComponent({
     this.genres = data.genres;
   },
   methods: {
-    async search(n: any) {
-      const [GTE, LTE] = n;
+    async search(newDate: Array<Date>) {
+      const [GTE, LTE] = newDate;
       await this.fetchMoviesHandler({
         "release_date.gte": dateFormat(GTE),
         "release_date.lte": dateFormat(LTE)
