@@ -4,16 +4,16 @@
       <div class="flex">
         Search by release date:
         <Search 
-          :model="searchValue"
-          @changeModel="changeSearchValue"
+          @update:modelValue="search"
         />
       </div>
-      <AppButton @click="search">
-        <template #label>Search</template>
-      </AppButton>
     </div>
   </AppHeader>
-  <div class="movie-container">
+  <AppLoading class="dark" v-if="loading" />
+  <div class="no-data" v-else-if="movies.length === 0">
+    No Data Matching
+  </div>
+  <div v-else class="movie-container">
     <AppMovieCard
       v-for="(movie, key) in movies"
       :key="key"
@@ -21,11 +21,11 @@
       :genres="genres"
     />
   </div>
-  <div class="pagination">
+  <div v-if="movies.length !== 0" class="pagination">
     <div class="link" @click="previousPage">&lt; Previous Page</div>
     <div class="link" @click="nextPage">Next Page ></div>
   </div>
-  <div class="items-conter">Showing {{pageNum === 1 ? 1 : pageNum * 10 + 1}}-{{(movies.length) + (10 * (pageNum - 1))}} Result</div>
+  <div v-if="movies.length !== 0" class="items-conter">Showing {{pageNum === 1 ? 1 : pageNum * 10 + 1}}-{{(movies.length) + (10 * (pageNum - 1))}} Result</div>
 </template>
 
 <script lang="ts">
@@ -35,44 +35,45 @@ import AppMovieCard from "@/components/AppMovieCard.vue";
 import AppHeader from "@/components/common/AppHeader.vue";
 import AppButton from "@/components/common/AppButton.vue";
 import { fetchMovies, fetchMovieGenres } from "@/apis/movie";
-import { useMovieStore } from "@/stores/movie"
-import { isThisQuarter } from 'date-fns';
+import AppLoading from '@/components/common/AppLoading.vue';
+import { dateFormat } from '../utils/index';
 
 export default defineComponent({
   data: () => ({
     movies: [],
     pageNum: 1,
     genres: [],
-    searchValue: []
+    searchValue: [],
+    loading: false
   }),
   components: {
     AppButton,
     AppHeader,
     AppMovieCard,
-    Search
+    Search,
+    AppLoading
   },
   async created() {
-    const store = useMovieStore();
     await this.fetchMoviesHandler();
     const { data } = await fetchMovieGenres();
     this.genres = data.genres;
-    store.setGenres(this.genres);
   },
   methods: {
-    changeSearchValue(value: never[]) {
-      this.searchValue = value;
-    },
-    async search() {
-      const [GTE, LTE] = this.searchValue;
-      console.log(GTE, LTE)
+    async search(n: any) {
+      const [GTE, LTE] = n;
       await this.fetchMoviesHandler({
-        "release_date.gte": GTE,
-        "release_date.lte": LTE
+        "release_date.gte": dateFormat(GTE),
+        "release_date.lte": dateFormat(LTE)
       })
     },
     async fetchMoviesHandler(query: Object = {}) {
-      const { data } = await fetchMovies({ page: this.pageNum, ...query });
-      this.movies = data.results;
+      try {
+        this.loading = true;
+        const { data } = await fetchMovies({ page: this.pageNum, ...query });
+        this.movies = data.results;
+      } finally {
+        this.loading = false;
+      }
     },
     async previousPage() {
       if(this.pageNum === 0) return;
@@ -102,7 +103,7 @@ export default defineComponent({
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 }
 .pagination {
   width: 100%;
@@ -120,5 +121,8 @@ export default defineComponent({
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
+}
+.no-data {
+  text-align: center;
 }
 </style>
